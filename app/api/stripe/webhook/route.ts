@@ -13,8 +13,8 @@ function getServiceClient() {
 
 export async function POST(request: Request) {
   const body = await request.text()
-
   let event: Stripe.Event
+
   try {
     const sig = request.headers.get('stripe-signature')!
     event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!.trim())
@@ -24,10 +24,9 @@ export async function POST(request: Request) {
   }
 
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as Stripe.CheckoutSession
+    const session = event.data.object as Stripe.Checkout.Session
     const meta = session.metadata!
     console.log('Meta:', meta)
-
     const supabase = getServiceClient()
     const { data, error } = await supabase.from('gifts').insert({
       artist_id: meta.artist_id,
@@ -39,7 +38,6 @@ export async function POST(request: Request) {
       stripe_payment_intent_id: session.payment_intent as string,
       status: 'completed',
     })
-
     console.log('Insert result:', data, error)
   }
 
