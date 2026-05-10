@@ -3,13 +3,6 @@ import { createClient } from '@/lib/supabase/server'
 export default async function HomePage() {
   const supabase = await createClient()
 
-  const { data: artists } = await supabase
-    .from('artist_profiles')
-    .select('*')
-    .eq('is_active', true)
-    .order('supporter_count', { ascending: false })
-    .limit(6)
-
   const { data: recentGifts } = await supabase
     .from('gifts')
     .select('*, gift_types(*), artist_profiles(display_name, slug)')
@@ -29,7 +22,6 @@ export default async function HomePage() {
         @media (max-width: 600px) {
           .hero-title { font-size: 48px !important; }
           .gift-grid { grid-template-columns: repeat(3, 1fr) !important; }
-          .artist-grid { grid-template-columns: 1fr 1fr !important; }
           .how-grid { grid-template-columns: 1fr !important; }
           .hero-stats { gap: 24px !important; }
           .stat-num { font-size: 28px !important; }
@@ -51,18 +43,18 @@ export default async function HomePage() {
 
       <div className="hero-pad" style={{ minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', padding:'120px 40px 80px', position:'relative', overflow:'hidden' }}>
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 80% 60% at 50% 30%, rgba(139,92,246,0.12) 0%, transparent 70%)' }} />
-        <p style={{ fontSize:11, letterSpacing:4, textTransform:'uppercase', color:'#A78BFA', fontWeight:600, marginBottom:20, position:'relative' }}>The future of artist support</p>
+        <p style={{ fontSize:11, letterSpacing:4, textTransform:'uppercase', color:'#A78BFA', fontWeight:600, marginBottom:20, position:'relative' }}>THE FUTURE OF DIRECT FAN SUPPORT</p>
         <h1 className="hero-title" style={{ fontFamily:'Cormorant Garant, serif', fontSize:'clamp(48px, 9vw, 110px)', fontWeight:300, lineHeight:1.1, color:'#F0EEF8', maxWidth:900, position:'relative', marginBottom:28 }}>
-          <em style={{fontStyle:'italic', color:'#A78BFA'}}>Your music.</em><br />
+          <em style={{fontStyle:'italic', color:'#A78BFA'}}>Your sound.</em><br />
           Your fans.<br />
           <span style={{ background:'linear-gradient(135deg, #C4C4D4 0%, #7A7A8F 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Your money.</span>
         </h1>
         <p style={{ fontSize:16, color:'#8E8AA0', maxWidth:440, lineHeight:1.7, position:'relative', marginBottom:40 }}>
-          Built for Artists, Producers, and Music Creators.
+          Built for independent music creators.
         </p>
         <div style={{ display:'flex', gap:12, flexWrap:'wrap', justifyContent:'center', position:'relative', marginBottom:56 }}>
-          <a href="/signup" style={{ background:'#8B5CF6', color:'#fff', textDecoration:'none', padding:'16px 32px', borderRadius:4, fontSize:12, fontWeight:700, letterSpacing:2, textTransform:'uppercase', boxShadow:'0 0 40px rgba(139,92,246,0.35)' }}>Claim Your Page</a>
-          <a href="#artists" style={{ background:'transparent', color:'#C4C4D4', textDecoration:'none', border:'1px solid rgba(196,196,212,0.2)', padding:'16px 32px', borderRadius:4, fontSize:12, fontWeight:700, letterSpacing:2, textTransform:'uppercase' }}>Discover Artists</a>
+          <a href="/signup" style={{ background:'#8B5CF6', color:'#fff', textDecoration:'none', padding:'16px 32px', borderRadius:4, fontSize:12, fontWeight:700, letterSpacing:2, textTransform:'uppercase', boxShadow:'0 0 40px rgba(139,92,246,0.35)' }}>Create Your Page</a>
+          <a href="/artists" style={{ background:'transparent', color:'#C4C4D4', textDecoration:'none', border:'1px solid rgba(196,196,212,0.2)', padding:'16px 32px', borderRadius:4, fontSize:12, fontWeight:700, letterSpacing:2, textTransform:'uppercase' }}>DISCOVER CREATORS</a>
         </div>
         <div style={{ position:'relative', textAlign:'center' }}>
           <div style={{ fontFamily:'Cormorant Garant, serif', fontSize:28, fontWeight:300, color:'#F0EEF8' }}>Creators keep <em style={{color:'#A78BFA', fontStyle:'italic'}}>90%</em></div>
@@ -91,29 +83,6 @@ export default async function HomePage() {
         </div>
       </div>
 
-      <div id="artists" className="section-pad" style={{ padding:'80px 40px' }}>
-        <p style={{ fontSize:10, letterSpacing:4, textTransform:'uppercase', color:'#8B5CF6', fontWeight:600, marginBottom:14 }}>Featured</p>
-        <h2 style={{ fontFamily:'Cormorant Garant, serif', fontSize:'clamp(32px, 5vw, 56px)', fontWeight:300, color:'#F0EEF8', marginBottom:40 }}>Artists you'll <em style={{color:'#A78BFA'}}>love</em></h2>
-        <div className="artist-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(240px, 1fr))', gap:16 }}>
-          {artists?.map(artist => (
-            <a key={artist.id} href={`/artist/${artist.slug}`} style={{ textDecoration:'none', background:'#0F0C1A', border:'1px solid rgba(255,255,255,0.07)', borderRadius:14, overflow:'hidden', display:'block' }}>
-              <div style={{ height:100, background:`linear-gradient(135deg, ${artist.accent_color}40 0%, rgba(5,4,10,0.9) 100%)`, position:'relative' }}>
-                <span style={{ position:'absolute', bottom:8, left:12, fontSize:9, letterSpacing:2, color:'rgba(255,255,255,0.3)', textTransform:'uppercase' }}>velour.fm/{artist.slug}</span>
-              </div>
-              <div style={{ padding:'14px 16px 18px' }}>
-                <div style={{ width:48, height:48, borderRadius:'50%', background:'#1E1935', border:'3px solid #05040A', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'Cormorant Garant, serif', fontSize:16, color:'#C4C4D4', marginTop:-28, marginBottom:8 }}>
-                  {artist.display_name.slice(0,2).toUpperCase()}
-                </div>
-                <div style={{ fontSize:15, fontWeight:700, color:'#F0EEF8', marginBottom:3 }}>{artist.display_name}</div>
-                <div style={{ fontSize:10, letterSpacing:1, color:'#A78BFA', textTransform:'uppercase', marginBottom:8 }}>{artist.genre}</div>
-                <div style={{ fontSize:12, color:'#8E8AA0' }}>{artist.supporter_count} supporters</div>
-              </div>
-            </a>
-          ))}
-          {!artists?.length && <p style={{ color:'#8E8AA0' }}>No artists yet — <a href="/signup" style={{color:'#A78BFA'}}>be the first</a>.</p>}
-        </div>
-      </div>
-
       {false && (recentGifts ?? []).length > 0 && (
         <div className="section-pad" style={{ padding:'80px 40px', background:'#0F0C1A', borderTop:'1px solid rgba(255,255,255,0.07)' }}>
           <p style={{ fontSize:10, letterSpacing:4, textTransform:'uppercase', color:'#8B5CF6', fontWeight:600, marginBottom:14 }}>Real-time</p>
@@ -139,9 +108,9 @@ export default async function HomePage() {
         <h2 style={{ fontFamily:'Cormorant Garant, serif', fontSize:'clamp(32px, 5vw, 56px)', fontWeight:300, color:'#F0EEF8', marginBottom:40 }}>Simple by <em style={{color:'#A78BFA'}}>design</em></h2>
         <div className="how-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:2, border:'1px solid rgba(255,255,255,0.07)', borderRadius:14, overflow:'hidden' }}>
           {[
-            {num:'01', icon:'🎧', title:'Find your artist', desc:'Visit their Velour.fm page. Listen instantly. No app needed.'},
+            {num:'01', icon:'🎧', title:'Find your creator', desc:'Visit their Velour.fm page. Listen instantly. No app needed.'},
             {num:'02', icon:'🎁', title:'Choose a gift', desc:'From a $1 Soundwave to a $100 Crown. Every amount matters.'},
-            {num:'03', icon:'⚡', title:'Direct payout', desc:'90% goes straight to the artist via Stripe. Instantly.'},
+            {num:'03', icon:'⚡', title:'Direct payout', desc:'90% goes straight to the creator via Stripe. Instantly.'},
           ].map(s => (
             <div key={s.num} style={{ background:'#0F0C1A', padding:'32px 24px' }}>
               <div style={{ fontFamily:'Cormorant Garant, serif', fontSize:60, fontWeight:700, color:'rgba(139,92,246,0.08)', lineHeight:1, marginBottom:12 }}>{s.num}</div>
@@ -155,9 +124,11 @@ export default async function HomePage() {
 
       <div className="cta-pad" style={{ padding:'100px 40px', textAlign:'center', background:'#0F0C1A', borderTop:'1px solid rgba(255,255,255,0.07)' }}>
         <h2 style={{ fontFamily:'Cormorant Garant, serif', fontSize:'clamp(36px, 6vw, 72px)', fontWeight:300, color:'#F0EEF8', maxWidth:600, margin:'0 auto 20px' }}>
-          Your music.<br /><em style={{color:'#A78BFA'}}>Your page.</em> Your money.
+          <em style={{fontStyle:'italic', color:'#A78BFA'}}>Your sound.</em><br />
+          Your fans.<br />
+          <span style={{ background:'linear-gradient(135deg, #C4C4D4 0%, #7A7A8F 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Your money.</span>
         </h2>
-        <p style={{ fontSize:15, color:'#8E8AA0', marginBottom:36 }}>Join independent artists already on Velour.fm.</p>
+        <p style={{ fontSize:15, color:'#8E8AA0', marginBottom:36 }}>Join independent music creators already on Velour.fm.</p>
         <a href="/signup" style={{ background:'#8B5CF6', color:'#fff', textDecoration:'none', padding:'16px 40px', borderRadius:4, fontSize:13, fontWeight:700, letterSpacing:2, textTransform:'uppercase', boxShadow:'0 0 40px rgba(139,92,246,0.35)', display:'inline-block' }}>
           Claim Your Page →
         </a>
@@ -175,7 +146,7 @@ export default async function HomePage() {
             <a key={l.label} href={l.href} style={{ fontSize:12, color:'#8E8AA0', textDecoration:'none' }}>{l.label}</a>
           ))}
         </div>
-        <span style={{ fontSize:11, color:'#7A7A8F' }}>© 2025 Velour.fm</span>
+        <span style={{ fontSize:11, color:'#7A7A8F' }}>© 2026 Velour.fm</span>
       </footer>
     </div>
   )

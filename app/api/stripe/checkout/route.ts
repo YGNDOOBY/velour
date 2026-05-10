@@ -5,8 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(request: Request) {
-  const { giftTypeId, artistId, fanName } = await request.json()
-
+  const { giftTypeId, artistId, fanName, songId } = await request.json()
   const supabase = await createClient()
 
   const { data: giftType } = await supabase
@@ -29,6 +28,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Artist not connected to Stripe' }, { status: 400 })
   }
 
+  let songTitle = ''
+  if (songId) {
+    const { data: song } = await supabase.from('songs').select('title').eq('id', songId).single()
+    if (song) songTitle = song.title
+  }
+
   const platformFee = Math.round(giftType.amount_cents * 0.10)
 
   const session = await stripe.checkout.sessions.create({
@@ -37,8 +42,12 @@ export async function POST(request: Request) {
       price_data: {
         currency: 'usd',
         product_data: {
-          name: `${giftType.emoji} ${giftType.name} for ${artist.display_name}`,
-          description: `Supporting ${artist.display_name} on VELOUR`,
+          name: songId
+            ? `${giftType.emoji} ${giftType.name} for "${songTitle}" by ${artist.display_name}`
+            : `${giftType.emoji} ${giftType.name} for ${artist.display_name}`,
+          description: songId
+            ? `Supporting "${songTitle}" on Velour.fm`
+            : `Supporting ${artist.display_name} on Velour.fm`,
         },
         unit_amount: giftType.amount_cents,
       },
@@ -55,6 +64,7 @@ export async function POST(request: Request) {
       gift_type_id: giftTypeId,
       artist_id: artistId,
       fan_name: fanName || 'Anonymous',
+      song_id: songId || '',
       platform_fee_cents: platformFee,
       artist_payout_cents: giftType.amount_cents - platformFee,
     },

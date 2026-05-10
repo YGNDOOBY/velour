@@ -35,8 +35,10 @@ export default function SignupPage() {
     if (error) { setError(error.message); setLoading(false); return }
     if (role === 'fan') {
       router.push('/')
-    } else {
+    } else if (role === 'artist') {
       router.push('/onboarding')
+    } else {
+      router.push('/creator-onboarding')
     }
   }
 

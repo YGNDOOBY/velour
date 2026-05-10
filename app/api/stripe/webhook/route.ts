@@ -27,7 +27,9 @@ export async function POST(request: Request) {
     const session = event.data.object as Stripe.Checkout.Session
     const meta = session.metadata!
     console.log('Meta:', meta)
+
     const supabase = getServiceClient()
+
     const { data, error } = await supabase.from('gifts').insert({
       artist_id: meta.artist_id,
       gift_type_id: meta.gift_type_id,
@@ -36,8 +38,10 @@ export async function POST(request: Request) {
       platform_fee_cents: parseInt(meta.platform_fee_cents),
       artist_payout_cents: parseInt(meta.artist_payout_cents),
       stripe_payment_intent_id: session.payment_intent as string,
+      song_id: meta.song_id || null,
       status: 'completed',
     })
+
     console.log('Insert result:', data, error)
   }
 

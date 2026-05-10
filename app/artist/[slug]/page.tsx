@@ -45,24 +45,35 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
     <div style={{ minHeight:'100vh', background:'#05040A', color:'#F0EEF8', fontFamily:'Syne, sans-serif' }}>
 
       <nav style={{ position:'fixed', top:0, left:0, right:0, zIndex:100, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 20px', background:'rgba(5,4,10,0.9)', backdropFilter:'blur(12px)', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
-        <a href="/" style={{ fontFamily:'Cormorant Garant, serif', fontSize:20, fontWeight:700, letterSpacing:4, color:'#F0EEF8', textDecoration:'none' }}>VEL<span style={{color:'#8B5CF6'}}>◈</span>UR</a>
+        <a href="/" style={{ fontFamily:'Cormorant Garant, serif', fontSize:20, fontWeight:700, letterSpacing:4, color:'#F0EEF8', textDecoration:'none' }}>VEL<span style={{color:'#8B5CF6'}}>◈</span>UR<span style={{color:'#8B5CF6', fontSize:12}}>.FM</span></a>
         <a href="/signup" style={{ background:'#8B5CF6', color:'#fff', padding:'8px 16px', borderRadius:4, fontSize:11, fontWeight:700, letterSpacing:1.5, textTransform:'uppercase', textDecoration:'none' }}>Get Your Page</a>
       </nav>
 
+      {/* BANNER */}
       <div style={{ height:260, marginTop:49, position:'relative', background:'#0F0C1A', overflow:'hidden' }}>
-        <div style={{ position:'absolute', inset:0, background:`linear-gradient(135deg, ${artist.accent_color}40 0%, rgba(5,4,10,0.95) 100%)` }} />
+        {artist.banner_url ? (
+          <img src={artist.banner_url} alt="Banner" style={{ width:'100%', height:'100%', objectFit:'cover', position:'absolute', inset:0 }} />
+        ) : (
+          <div style={{ position:'absolute', inset:0, background:`linear-gradient(135deg, ${artist.accent_color}40 0%, rgba(5,4,10,0.95) 100%)` }} />
+        )}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(5,4,10,0.9) 0%, transparent 60%)' }} />
         <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'0 20px 24px', display:'flex', alignItems:'flex-end', gap:16 }}>
-          <div style={{ width:80, height:80, borderRadius:'50%', background:'#1E1935', border:'3px solid #05040A', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'Cormorant Garant, serif', fontSize:28, fontWeight:700, color:'#C4C4D4', position:'relative', bottom:-12, flexShrink:0 }}>
-            {artist.display_name.slice(0,2).toUpperCase()}
+          <div style={{ width:80, height:80, borderRadius:'50%', background:'#1E1935', border:'3px solid #05040A', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'Cormorant Garant, serif', fontSize:28, fontWeight:700, color:'#C4C4D4', position:'relative', bottom:-12, flexShrink:0 }}>
+            {artist.avatar_url ? (
+              <img src={artist.avatar_url} alt={artist.display_name} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+            ) : (
+              artist.display_name.slice(0,2).toUpperCase()
+            )}
           </div>
           <div style={{ paddingBottom:4 }}>
-            <div style={{ fontSize:9, letterSpacing:3, textTransform:'uppercase', color:'#A78BFA', marginBottom:4 }}>✦ Independent Artist</div>
+            <div style={{ fontSize:9, letterSpacing:3, textTransform:'uppercase', color:'#A78BFA', marginBottom:4 }}>✦ Independent Creator</div>
             <h1 style={{ fontFamily:'Cormorant Garant, serif', fontSize:'clamp(28px, 7vw, 48px)', fontWeight:700, lineHeight:1, marginBottom:4 }}>{artist.display_name}</h1>
             <p style={{ fontSize:11, letterSpacing:1, color:'#7A7A8F', textTransform:'uppercase' }}>{artist.genre}{artist.location ? ` · ${artist.location}` : ''}</p>
           </div>
         </div>
       </div>
 
+      {/* STATS */}
       <div style={{ display:'flex', borderBottom:'1px solid rgba(255,255,255,0.07)', background:'#0F0C1A' }}>
         <div style={{ flex:1, padding:'14px 0', textAlign:'center', borderRight:'1px solid rgba(255,255,255,0.07)' }}>
           <div style={{ fontFamily:'Cormorant Garant, serif', fontSize:22, fontWeight:600 }}>{artist.supporter_count}</div>
@@ -78,12 +89,14 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
         </div>
       </div>
 
+      {/* GIFT BUTTONS */}
       <div style={{ padding:'20px 16px', background:'#05040A', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
         <div style={{ fontFamily:'Cormorant Garant, serif', fontSize:18, fontWeight:600, marginBottom:4, color:'#F0EEF8' }}>Support {artist.display_name}</div>
-        <p style={{ fontSize:12, color:'#8E8AA0', marginBottom:14 }}>90% goes directly to the artist.</p>
+        <p style={{ fontSize:12, color:'#8E8AA0', marginBottom:14 }}>90% goes directly to the creator.</p>
         <GiftButtons giftTypes={giftTypes || []} artistId={artist.id} />
       </div>
 
+      {/* SONGS */}
       <div style={{ padding:'20px 16px', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
         <div style={{ fontSize:10, letterSpacing:3, textTransform:'uppercase', color:'#8B5CF6', fontWeight:600, marginBottom:14 }}>Music</div>
         {!songs?.length && <p style={{ color:'#8E8AA0', fontSize:14 }}>No songs yet.</p>}
@@ -95,11 +108,15 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
               <div style={{ fontSize:14, fontWeight:600, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{s.title}</div>
               <div style={{ fontSize:11, color:'#8E8AA0' }}>{s.play_count} plays</div>
             </div>
-            <audio controls src={s.audio_url} style={{ height:28, maxWidth:140 }} />
+            <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:6 }}>
+              <audio controls src={s.audio_url} style={{ height:28, maxWidth:140 }} />
+              <GiftButtons giftTypes={giftTypes || []} artistId={artist.id} songId={s.id} songTitle={s.title} />
+            </div>
           </div>
         ))}
       </div>
 
+      {/* BIO */}
       {artist.bio && (
         <div style={{ padding:'20px 16px', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
           <div style={{ fontSize:10, letterSpacing:3, textTransform:'uppercase', color:'#8B5CF6', fontWeight:600, marginBottom:12 }}>About</div>
@@ -107,6 +124,7 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
         </div>
       )}
 
+      {/* SOCIAL */}
       {artist.social_links?.length > 0 && (
         <div style={{ padding:'20px 16px', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
           <div style={{ fontSize:10, letterSpacing:3, textTransform:'uppercase', color:'#8B5CF6', fontWeight:600, marginBottom:12 }}>Links</div>
@@ -121,6 +139,7 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
         </div>
       )}
 
+      {/* LEADERBOARD */}
       {topSupporters && topSupporters.length > 0 && (
         <div style={{ padding:'20px 16px', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
           <div style={{ fontSize:10, letterSpacing:3, textTransform:'uppercase', color:'#8B5CF6', fontWeight:600, marginBottom:14 }}>Top Supporters</div>
@@ -137,7 +156,7 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
       )}
 
       <div style={{ padding:'24px 16px', textAlign:'center' }}>
-        <a href="/" style={{ fontFamily:'Cormorant Garant, serif', fontSize:14, color:'#8E8AA0', textDecoration:'none', letterSpacing:3 }}>Powered by VEL◈UR</a>
+        <a href="/" style={{ fontFamily:'Cormorant Garant, serif', fontSize:14, color:'#8E8AA0', textDecoration:'none', letterSpacing:3 }}>Powered by VEL◈UR.FM</a>
       </div>
 
     </div>
