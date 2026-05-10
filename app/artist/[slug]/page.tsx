@@ -28,54 +28,96 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
 
   return (
     <div style={{ minHeight:'100vh', background:'#05040A', color:'#F0EEF8', fontFamily:'Syne, sans-serif' }}>
-      <nav style={{ position:'fixed', top:0, left:0, right:0, zIndex:100, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'16px 32px', background:'rgba(5,4,10,0.85)', backdropFilter:'blur(12px)', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
-        <a href="/" style={{ fontFamily:'Cormorant Garant, serif', fontSize:22, fontWeight:700, letterSpacing:5, color:'#F0EEF8', textDecoration:'none' }}>VEL<span style={{color:'#8B5CF6'}}>◈</span>UR</a>
-        <a href="/signup" style={{ background:'#8B5CF6', color:'#fff', padding:'9px 20px', borderRadius:4, fontSize:11, fontWeight:700, letterSpacing:1.5, textTransform:'uppercase', textDecoration:'none' }}>Get Your Page</a>
+
+      {/* NAV */}
+      <nav style={{ position:'fixed', top:0, left:0, right:0, zIndex:100, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 20px', background:'rgba(5,4,10,0.9)', backdropFilter:'blur(12px)', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
+        <a href="/" style={{ fontFamily:'Cormorant Garant, serif', fontSize:20, fontWeight:700, letterSpacing:4, color:'#F0EEF8', textDecoration:'none' }}>VEL<span style={{color:'#8B5CF6'}}>◈</span>UR</a>
+        <a href="/signup" style={{ background:'#8B5CF6', color:'#fff', padding:'8px 16px', borderRadius:4, fontSize:11, fontWeight:700, letterSpacing:1.5, textTransform:'uppercase', textDecoration:'none' }}>Get Your Page</a>
       </nav>
 
-      <div style={{ height:340, marginTop:57, position:'relative', background:'#0F0C1A', overflow:'hidden' }}>
+      {/* BANNER */}
+      <div style={{ height:260, marginTop:49, position:'relative', background:'#0F0C1A', overflow:'hidden' }}>
         <div style={{ position:'absolute', inset:0, background:`linear-gradient(135deg, ${artist.accent_color}40 0%, rgba(5,4,10,0.95) 100%)` }} />
-        <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'0 40px 32px', display:'flex', alignItems:'flex-end', gap:24 }}>
-          <div style={{ width:100, height:100, borderRadius:'50%', background:'#1E1935', border:'4px solid #05040A', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'Cormorant Garant, serif', fontSize:36, fontWeight:700, color:'#C4C4D4', position:'relative', bottom:-16 }}>
+        <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'0 20px 24px', display:'flex', alignItems:'flex-end', gap:16 }}>
+          <div style={{ width:80, height:80, borderRadius:'50%', background:'#1E1935', border:'3px solid #05040A', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'Cormorant Garant, serif', fontSize:28, fontWeight:700, color:'#C4C4D4', position:'relative', bottom:-12, flexShrink:0 }}>
             {artist.display_name.slice(0,2).toUpperCase()}
           </div>
           <div style={{ paddingBottom:4 }}>
-            <div style={{ fontSize:10, letterSpacing:3, textTransform:'uppercase', color:'#A78BFA', marginBottom:6 }}>✦ Independent Artist</div>
-            <h1 style={{ fontFamily:'Cormorant Garant, serif', fontSize:48, fontWeight:700, lineHeight:1, marginBottom:6 }}>{artist.display_name}</h1>
-            <p style={{ fontSize:12, letterSpacing:1.5, color:'#7A7A8F', textTransform:'uppercase' }}>{artist.genre}{artist.location ? ` · ${artist.location}` : ''}</p>
+            <div style={{ fontSize:9, letterSpacing:3, textTransform:'uppercase', color:'#A78BFA', marginBottom:4 }}>✦ Independent Artist</div>
+            <h1 style={{ fontFamily:'Cormorant Garant, serif', fontSize:'clamp(28px, 7vw, 48px)', fontWeight:700, lineHeight:1, marginBottom:4 }}>{artist.display_name}</h1>
+            <p style={{ fontSize:11, letterSpacing:1, color:'#7A7A8F', textTransform:'uppercase' }}>{artist.genre}{artist.location ? ` · ${artist.location}` : ''}</p>
           </div>
         </div>
       </div>
 
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 320px', maxWidth:1100, margin:'0 auto', padding:'32px 40px 60px', gap:32 }}>
-        <div>
-          <div style={{ marginBottom:32 }}>
-            <div style={{ fontSize:10, letterSpacing:3, textTransform:'uppercase', color:'#8B5CF6', fontWeight:600, marginBottom:16 }}>Music</div>
-            {!songs?.length && <p style={{ color:'#8E8AA0' }}>No songs yet.</p>}
-            {songs?.map((s, i) => (
-              <div key={s.id} style={{ display:'flex', alignItems:'center', gap:14, padding:'12px 16px', borderRadius:10, marginBottom:6, border:'1px solid rgba(255,255,255,0.07)', background:'#0F0C1A' }}>
-                <span style={{ fontSize:12, color:'#7A7A8F', width:20, textAlign:'center' }}>{i + 1}</span>
-                <div style={{ width:44, height:44, background:'#16122A', borderRadius:6, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0 }}>🎵</div>
-                <div style={{ flex:1 }}>
-                  <div style={{ fontSize:14, fontWeight:600 }}>{s.title}</div>
-                  <div style={{ fontSize:12, color:'#8E8AA0' }}>{s.play_count} plays</div>
-                </div>
-                <audio controls src={s.audio_url} style={{ height:32 }} />
-              </div>
+      {/* STATS BAR */}
+      <div style={{ display:'flex', borderBottom:'1px solid rgba(255,255,255,0.07)', background:'#0F0C1A' }}>
+        <div style={{ flex:1, padding:'14px 0', textAlign:'center', borderRight:'1px solid rgba(255,255,255,0.07)' }}>
+          <div style={{ fontFamily:'Cormorant Garant, serif', fontSize:22, fontWeight:600 }}>{artist.supporter_count}</div>
+          <div style={{ fontSize:9, letterSpacing:2, textTransform:'uppercase', color:'#8E8AA0', marginTop:2 }}>Supporters</div>
+        </div>
+        <div style={{ flex:1, padding:'14px 0', textAlign:'center', borderRight:'1px solid rgba(255,255,255,0.07)' }}>
+          <div style={{ fontFamily:'Cormorant Garant, serif', fontSize:22, fontWeight:600 }}>{songs?.length || 0}</div>
+          <div style={{ fontSize:9, letterSpacing:2, textTransform:'uppercase', color:'#8E8AA0', marginTop:2 }}>Songs</div>
+        </div>
+        <div style={{ flex:1, padding:'14px 0', textAlign:'center' }}>
+          <div style={{ fontFamily:'Cormorant Garant, serif', fontSize:22, fontWeight:600 }}>${artist.total_received}</div>
+          <div style={{ fontSize:9, letterSpacing:2, textTransform:'uppercase', color:'#8E8AA0', marginTop:2 }}>Received</div>
+        </div>
+      </div>
+
+      {/* GIFT BUTTONS - MOBILE FIRST */}
+      <div style={{ padding:'20px 16px', background:'#05040A', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
+        <div style={{ fontFamily:'Cormorant Garant, serif', fontSize:18, fontWeight:600, marginBottom:4, color:'#F0EEF8' }}>Support {artist.display_name}</div>
+        <p style={{ fontSize:12, color:'#8E8AA0', marginBottom:14 }}>90% goes directly to the artist.</p>
+        <GiftButtons giftTypes={giftTypes || []} artistId={artist.id} />
+      </div>
+
+      {/* SONGS */}
+      <div style={{ padding:'20px 16px', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
+        <div style={{ fontSize:10, letterSpacing:3, textTransform:'uppercase', color:'#8B5CF6', fontWeight:600, marginBottom:14 }}>Music</div>
+        {!songs?.length && <p style={{ color:'#8E8AA0', fontSize:14 }}>No songs yet.</p>}
+        {songs?.map((s, i) => (
+          <div key={s.id} style={{ display:'flex', alignItems:'center', gap:12, padding:'12px 0', borderBottom:'1px solid rgba(255,255,255,0.05)' }}>
+            <span style={{ fontSize:11, color:'#7A7A8F', width:18, textAlign:'center', flexShrink:0 }}>{i + 1}</span>
+            <div style={{ width:40, height:40, background:'#16122A', borderRadius:6, display:'flex', alignItems:'center', justifyContent:'center', fontSize:18, flexShrink:0 }}>🎵</div>
+            <div style={{ flex:1, minWidth:0 }}>
+              <div style={{ fontSize:14, fontWeight:600, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{s.title}</div>
+              <div style={{ fontSize:11, color:'#8E8AA0' }}>{s.play_count} plays</div>
+            </div>
+            <audio controls src={s.audio_url} style={{ height:28, maxWidth:140 }} />
+          </div>
+        ))}
+      </div>
+
+      {/* BIO */}
+      {artist.bio && (
+        <div style={{ padding:'20px 16px', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
+          <div style={{ fontSize:10, letterSpacing:3, textTransform:'uppercase', color:'#8B5CF6', fontWeight:600, marginBottom:12 }}>About</div>
+          <p style={{ fontSize:14, color:'#8E8AA0', lineHeight:1.8 }}>{artist.bio}</p>
+        </div>
+      )}
+
+      {/* SOCIAL */}
+      {artist.social_links?.length > 0 && (
+        <div style={{ padding:'20px 16px', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
+          <div style={{ fontSize:10, letterSpacing:3, textTransform:'uppercase', color:'#8B5CF6', fontWeight:600, marginBottom:12 }}>Links</div>
+          <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
+            {artist.social_links.map((l: any) => (
+              <a key={l.id} href={l.url} target="_blank" rel="noreferrer"
+                style={{ background:'#16122A', border:'1px solid rgba(255,255,255,0.07)', color:'#8E8AA0', padding:'8px 14px', borderRadius:20, fontSize:11, fontWeight:600, letterSpacing:1, textTransform:'uppercase', textDecoration:'none' }}>
+                {l.platform}
+              </a>
             ))}
           </div>
-          {artist.bio && (
-            <div style={{ background:'#0F0C1A', border:'1px solid rgba(255,255,255,0.07)', borderRadius:12, padding:24 }}>
-              <div style={{ fontSize:10, letterSpacing:3, textTransform:'uppercase', color:'#8B5CF6', fontWeight:600, marginBottom:12 }}>About</div>
-              <p style={{ fontSize:14, color:'#8E8AA0', lineHeight:1.8 }}>{artist.bio}</p>
-            </div>
-          )}
         </div>
+      )}
 
-        <div style={{ paddingTop:8 }}>
-          <GiftButtons giftTypes={giftTypes || []} artistId={artist.id} />
-        </div>
+      {/* FOOTER */}
+      <div style={{ padding:'24px 16px', textAlign:'center' }}>
+        <a href="/" style={{ fontFamily:'Cormorant Garant, serif', fontSize:14, color:'#8E8AA0', textDecoration:'none', letterSpacing:3 }}>Powered by VEL◈UR</a>
       </div>
+
     </div>
   )
 }
