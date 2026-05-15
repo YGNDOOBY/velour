@@ -23,19 +23,17 @@ export default async function HomePage() {
           .hero-title { font-size: 48px !important; }
           .gift-grid { grid-template-columns: repeat(3, 1fr) !important; }
           .how-grid { grid-template-columns: 1fr !important; }
-          .hero-stats { gap: 24px !important; }
-          .stat-num { font-size: 28px !important; }
           .nav-pad { padding: 14px 20px !important; }
           .section-pad { padding: 60px 20px !important; }
           .hero-pad { padding: 100px 20px 60px !important; }
-          .cta-pad { padding: 80px 20px !important; }
-          .footer-wrap { flex-direction: column !important; text-align: center !important; gap: 12px !important; }
+          .footer-inner { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 20px !important; }
         }
       `}</style>
 
       <nav className="nav-pad" style={{ position:'fixed', top:0, left:0, right:0, zIndex:100, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'16px 40px', background:'rgba(5,4,10,0.9)', backdropFilter:'blur(12px)', borderBottom:'1px solid rgba(255,255,255,0.07)' }}>
         <div style={{ fontSize:22 }}><Logo /></div>
-        <div style={{ display:'flex', gap:10 }}>
+        <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+          <a href="/search" style={{ color:'#8E8AA0', textDecoration:'none', fontSize:12, fontWeight:600, padding:'8px 16px', border:'1px solid rgba(255,255,255,0.1)', borderRadius:20, letterSpacing:1, background:'rgba(255,255,255,0.05)', backdropFilter:'blur(10px)' }}>🔍 Search Creators</a>
           <a href="/login" style={{ color:'#8E8AA0', textDecoration:'none', fontSize:13, fontWeight:600, padding:'8px 14px' }}>Sign In</a>
           <a href="/signup" style={{ background:'#8B5CF6', color:'#fff', textDecoration:'none', padding:'8px 16px', borderRadius:4, fontSize:11, fontWeight:700, letterSpacing:1.5, textTransform:'uppercase' }}>Get Your Page</a>
         </div>
@@ -43,6 +41,7 @@ export default async function HomePage() {
 
       <div className="hero-pad" style={{ minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', padding:'120px 40px 80px', position:'relative', overflow:'hidden' }}>
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 80% 60% at 50% 30%, rgba(139,92,246,0.12) 0%, transparent 70%)' }} />
+        <img src="https://bsmixodvlozzitmdwkdr.supabase.co/storage/v1/object/public/velour-images/ChatGPT%20Image%20May%2010,%202026,%2008_19_28%20PM.png" alt="Velour.FM" style={{ width:160, height:160, objectFit:'contain', marginBottom:12, position:'relative' }} />
         <p style={{ fontSize:11, letterSpacing:4, textTransform:'uppercase', color:'#A78BFA', fontWeight:600, marginBottom:20, position:'relative' }}>THE FUTURE OF DIRECT FAN SUPPORT</p>
         <h1 className="hero-title" style={{ fontFamily:'Cormorant Garant, serif', fontSize:'clamp(48px, 9vw, 110px)', fontWeight:300, lineHeight:1.1, color:'#F0EEF8', maxWidth:900, position:'relative', marginBottom:28 }}>
           <em style={{fontStyle:'italic', color:'#A78BFA'}}>Your sound.</em><br />
@@ -122,32 +121,38 @@ export default async function HomePage() {
         </div>
       </div>
 
-      <div className="cta-pad" style={{ padding:'100px 40px', textAlign:'center', background:'#0F0C1A', borderTop:'1px solid rgba(255,255,255,0.07)' }}>
-        <h2 style={{ fontFamily:'Cormorant Garant, serif', fontSize:'clamp(36px, 6vw, 72px)', fontWeight:300, color:'#F0EEF8', maxWidth:600, margin:'0 auto 20px' }}>
-          <em style={{fontStyle:'italic', color:'#A78BFA'}}>Your sound.</em><br />
-          Your fans.<br />
-          <span style={{ background:'linear-gradient(135deg, #C4C4D4 0%, #7A7A8F 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Your money.</span>
-        </h2>
-        <p style={{ fontSize:15, color:'#8E8AA0', marginBottom:36 }}>Join independent music creators already on Velour.fm.</p>
-        <a href="/signup" style={{ background:'#8B5CF6', color:'#fff', textDecoration:'none', padding:'16px 40px', borderRadius:4, fontSize:13, fontWeight:700, letterSpacing:2, textTransform:'uppercase', boxShadow:'0 0 40px rgba(139,92,246,0.35)', display:'inline-block' }}>
-          Claim Your Page →
-        </a>
+      {/* CTA */}
+      <div style={{ padding:'120px 40px', textAlign:'center', background:'#0F0C1A', borderTop:'1px solid rgba(255,255,255,0.07)' }}>
+        <div style={{ maxWidth:560, margin:'0 auto' }}>
+          <h2 style={{ fontFamily:'Cormorant Garant, serif', fontSize:'clamp(36px, 6vw, 72px)', fontWeight:300, color:'#F0EEF8', marginBottom:20 }}>
+            <em style={{fontStyle:'italic', color:'#A78BFA'}}>Your sound.</em><br />
+            Your fans.<br />
+            <span style={{ background:'linear-gradient(135deg, #C4C4D4 0%, #7A7A8F 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Your money.</span>
+          </h2>
+          <p style={{ fontSize:15, color:'#8E8AA0', marginBottom:24 }}>Join independent music creators already on Velour.fm.</p>
+          <a href="/signup" style={{ background:'#8B5CF6', color:'#fff', textDecoration:'none', padding:'16px 40px', borderRadius:4, fontSize:13, fontWeight:700, letterSpacing:2, textTransform:'uppercase', boxShadow:'0 0 40px rgba(139,92,246,0.35)', display:'inline-block' }}>
+            Create Your Page →
+          </a>
+        </div>
       </div>
 
-      <footer className="footer-wrap" style={{ padding:'32px 40px', borderTop:'1px solid rgba(255,255,255,0.07)', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:16 }}>
-        <div style={{ fontSize:18 }}><Logo /></div>
-        <div style={{ display:'flex', gap:20, flexWrap:'wrap', justifyContent:'center' }}>
-          {[
-            {label:'Artists', href:'/artists'},
-            {label:'FAQ', href:'/faq'},
-            {label:'Privacy', href:'/privacy'},
-            {label:'Terms', href:'/terms'},
-          ].map(l => (
-            <a key={l.label} href={l.href} style={{ fontSize:12, color:'#8E8AA0', textDecoration:'none' }}>{l.label}</a>
-          ))}
+      {/* FOOTER */}
+      <footer style={{ borderTop:'1px solid rgba(255,255,255,0.08)', padding:'48px 32px' }}>
+        <div className="footer-inner" style={{ maxWidth:1200, margin:'0 auto', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:20 }}>
+          <div style={{ fontSize:18 }}><Logo /></div>
+          <div style={{ display:'flex', gap:32, flexWrap:'wrap', justifyContent:'center' }}>
+            {[
+              {label:'FAQ', href:'/faq'},
+              {label:'Privacy', href:'/privacy'},
+              {label:'Terms', href:'/terms'},
+            ].map(l => (
+              <a key={l.label} href={l.href} style={{ fontSize:12, color:'#8E8AA0', textDecoration:'none', letterSpacing:1 }}>{l.label}</a>
+            ))}
+          </div>
+          <span style={{ fontSize:11, color:'#7A7A8F' }}>© 2026 Velour.fm</span>
         </div>
-        <span style={{ fontSize:11, color:'#7A7A8F' }}>© 2026 Velour.fm</span>
       </footer>
+
     </div>
   )
 }

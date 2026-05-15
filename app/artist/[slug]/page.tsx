@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import GiftButtons from './GiftButtons'
+import ReportButton from './ReportButton'
 
 export default async function ArtistPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -65,10 +66,13 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
               artist.display_name.slice(0,2).toUpperCase()
             )}
           </div>
-          <div style={{ paddingBottom:4 }}>
+          <div style={{ paddingBottom:4, flex:1 }}>
             <div style={{ fontSize:9, letterSpacing:3, textTransform:'uppercase', color:'#A78BFA', marginBottom:4 }}>✦ Independent Creator</div>
             <h1 style={{ fontFamily:'Cormorant Garant, serif', fontSize:'clamp(28px, 7vw, 48px)', fontWeight:700, lineHeight:1, marginBottom:4 }}>{artist.display_name}</h1>
             <p style={{ fontSize:11, letterSpacing:1, color:'#7A7A8F', textTransform:'uppercase' }}>{artist.genre}{artist.location ? ` · ${artist.location}` : ''}</p>
+          </div>
+          <div style={{ paddingBottom:8 }}>
+            <ReportButton profileId={artist.id} />
           </div>
         </div>
       </div>
@@ -110,7 +114,10 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
             </div>
             <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:6 }}>
               <audio controls src={s.audio_url} style={{ height:28, maxWidth:140 }} />
-              <GiftButtons giftTypes={giftTypes || []} artistId={artist.id} songId={s.id} songTitle={s.title} />
+              <div style={{ display:'flex', gap:8, alignItems:'center' }}>
+                <GiftButtons giftTypes={giftTypes || []} artistId={artist.id} songId={s.id} songTitle={s.title} />
+                <ReportButton profileId={artist.id} songId={s.id} />
+              </div>
             </div>
           </div>
         ))}
