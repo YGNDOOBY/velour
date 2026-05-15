@@ -142,7 +142,8 @@ export default async function HomePage() {
           <div style={{ fontSize:18 }}><Logo /></div>
           <div style={{ display:'flex', gap:32, flexWrap:'wrap', justifyContent:'center' }}>
             {[
-              {label:'FAQ', href:'/faq'},
+              {label:'AUP', href:'/aup'},
+            {label:'FAQ', href:'/faq'},
               {label:'Privacy', href:'/privacy'},
               {label:'Terms', href:'/terms'},
             ].map(l => (
